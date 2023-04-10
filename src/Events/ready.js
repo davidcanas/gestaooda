@@ -11,6 +11,6 @@ module.exports = class extends Event {
 			.then(console.log('-------------------================================----------------------'))
 			.then(console.log('-------------------        BOT ON      ----------------------'))
 			.catch(console.error);
-
+  this.client.editStatus("dnd", {activities: [{name: "De olho na staff da odacraft", type: 3}]})
 	}
 };
