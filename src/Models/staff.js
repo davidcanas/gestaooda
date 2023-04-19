@@ -5,6 +5,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+  tag: {
+    type: String,
+    required: false,
+    default: "Não especificado"
+  },
    minecraft: {
         type: String,
         required: false,

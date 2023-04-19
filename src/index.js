@@ -1,5 +1,11 @@
 require('dotenv').config();
+process.on("uncaughtException", (error) => {
+  console.error(error);
+});
 
+process.on("unhandledRejection", (error) => {
+  console.error(error);
+});
 
 const Acol = require('./Structures/Bot');
 const config = require('./Structures/BotConfig');
@@ -72,9 +78,81 @@ app.get('/api/staff/get/:ID', async (req, res) => {
     })
 
 })
+
+app.get('/api/staff/get/:ID/avatar', async (req, res) => {
+    const id = req.params.ID
+    var staff;
+
+
+    if (isNaN(id)) {
+        staff = await staffdb.findOne({
+            minecraft: id
+        })
+    } else {
+        staff = await staffdb.findOne({
+            id: id
+        })
+    }
+    if (!staff) {
+        res.json({
+            erro: "Não existe nenhum staff com esse nick minecraft/id discord"
+        })
+        return;
+    }
+    const user = client.guilds.get("1001559876926976000").members.get(staff.id)
+
+
+    if (!user) {
+        res.json({
+            erro: "Não existe nenhum usuário no discord da odacraft com esse ID"
+        })
+        return
+    }
+    const avatar = user.user.staticAvatarURL
+
+    res.redirect(avatar)
+
+})
+app.get('/api/staff/get/:ID/username', async (req, res) => {
+    const id = req.params.ID
+    var staff;
+
+
+    if (isNaN(id)) {
+        staff = await staffdb.findOne({
+            minecraft: id
+        })
+    } else {
+        staff = await staffdb.findOne({
+            id: id
+        })
+    }
+    if (!staff) {
+        res.json({
+            erro: "Não existe nenhum staff com esse nick minecraft/id discord"
+        })
+        return;
+    }
+    const user = client.guilds.get("1001559876926976000").members.get(staff.id)
+
+
+    if (!user) {
+        res.json({
+            erro: "Não existe nenhum usuário no discord da odacraft com esse ID"
+        })
+        return
+    }
+  res.json({username: user.username + "#" + user.discriminator})
+
+})
 app.get("/api/staff/listar", async (req,res) => {
-    const lista = await staffdb.find({})
-    res.json({number: lista.length, data: lista})
+   try { 
+  var lista = await staffdb.find({})
+   } catch (err) {
+     res.json({erro: "Problema no banco de dados"})
+     return
+   }
+     res.json({number: lista.length, data: lista})
   
 })
 

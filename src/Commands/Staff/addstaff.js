@@ -56,6 +56,7 @@ module.exports = class PingInteraction extends InteractionBase {
             minecraft: interaction.data.options[1].value,
             cargo: "Helper",
             data_entrada: date,
+          tag: user.username + "#" + user.discriminator
         })
         user.addRole("1073265017476087909", "Adicionado na staff (HELPER)")
         user.addRole("1079138235361542276", "Adicionado na staff (HELPER)")
